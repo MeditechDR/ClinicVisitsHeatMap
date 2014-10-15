@@ -2,16 +2,17 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 USE livedb;
 GO
 DECLARE @_START DATE; SET @_START = '2014-01-01';
-DECLARE @_END DATE; SET @_END='2014-07-01';
+DECLARE @_END DATE; SET @_END= GETDATE();
 DECLARE @_REGION VARCHAR(3); SET @_REGION='ASL';
 
-
-	SELECT DISTINCT
-		[SourceID]
-		 --B.EmrID AS [ENTITY],
-		 ,A.EncSeqID AS [EVENT]
-		 ,VisitDateTime
-	From AprEnc AS A 
-	--JOIN [livedb].[dbo].[MisHubMriFile] AS B ON A.PatientID = B.PatientID
-	where A.VisitDateTime BETWEEN @_START AND @_END
-	AND A.SourceID = @_REGION
+SELECT
+	 
+	 /* CONVERT datetime to UNIX_TIMESTAMP*/
+	 DATEDIFF(SECOND, {d '1970-01-01'}, VisitDateTime) AS [datetime]
+	  
+	 ,COUNT(EncSeqID) AS value
+	From AprEnc
+	WHERE VisitDateTime BETWEEN @_START AND @_END
+	AND SourceID = @_REGION
+GROUP BY DATEPART(hour, VisitDateTime), VisitDateTime
+ORDER BY VisitDateTime DESC

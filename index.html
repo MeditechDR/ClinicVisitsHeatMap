@@ -9,6 +9,8 @@
     <title>Avera CI</title>
     <meta name="description" content="Avera Clinical Intelligence">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
     <script type="text/javascript" src="//d3js.org/d3.v3.min.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.min.js"></script>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
@@ -21,8 +23,17 @@
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
+<style>
 
-<div id="cal-heatmap"></div>
+</style>
+<div id="ASL-heatmap">ASL</div>
+<div id="ASH-heatmap">ASH</div>
+<div id="AQP-heatmap">AQP</div>
+<div id="AMK-heatmap">AMK</div>
+<p>
+<button id="domain-highlight-previous-selector" style="margin-bottom: 10px;">Backwards</button>
+<button id="domain-highlight-next-selector" style="margin-bottom: 10px;">Forwards</button>
+
 <script type="text/javascript">
 
     function converter(data) {
@@ -33,21 +44,99 @@
         return results;
     }    
     
-    
-    var cal = new CalHeatMap();
-    cal.init({
+var start_date = new Date(); start_date.setDate(start_date.getDate() -7 );
 
-            domain: "month",
-            subDomain: "day",
+var cal1 = new CalHeatMap();
+    cal1.init({
+            itemSelector: "#ASL-heatmap",
+            itemNamespace: "ASL",
             data: "./ASL_data.csv",
             dataType: "csv",
-            start: new Date(2014, 01, 01),
-            afterLoadData: converter ,
-            itemname: "value",
-            legend: [5, 10 ]
+            afterLoadData: converter,
+            range: 8,
+            domain: "day",
+            subDomain: "hour",
+            subDomainTextFormat: "%H",
+            start: start_date,
+            cellSize: 15,
+            domainGutter: 5,
+            domainMargin: 5,
+            animationDuration: 1500, 
+            nextSelector: "#domain-highlight-next-selector",
+            previousSelector: "#domain-highlight-previous-selector",
+            tooltip: true,
+            displayLegend: false
+            });
+
+
+var cal2 = new CalHeatMap();
+    cal2.init({
+            itemSelector: "#ASH-heatmap",
+            itemNamespace: "ASH",
+            data: "./ASH_data.csv",
+            dataType: "csv",
+            afterLoadData: converter,
+            range: 8,
+            domain: "day",
+            subDomain: "hour",
+            subDomainTextFormat: "%H",
+            start: start_date,
+            cellSize: 15,
+            domainGutter: 5,
+            domainMargin: 5,
+            animationDuration: 1500, 
+            nextSelector: "#domain-highlight-next-selector",
+            previousSelector: "#domain-highlight-previous-selector",
+            tooltip: true,
+            displayLegend: false
+            });
+
+var cal3 = new CalHeatMap();
+    cal3.init({
+            itemSelector: "#AQP-heatmap",
+            itemNamespace: "AQP",
+            data: "./AQP_data.csv",
+            dataType: "csv",
+            afterLoadData: converter,
+            range: 8,
+            domain: "day",
+            subDomain: "hour",
+            subDomainTextFormat: "%H",
+            start: start_date,
+            cellSize: 15,
+            domainGutter: 5,
+            domainMargin: 5,
+            animationDuration: 1500, 
+            nextSelector: "#domain-highlight-next-selector",
+            previousSelector: "#domain-highlight-previous-selector",
+            tooltip: true,
+            displayLegend: false
+            });
+
+var cal4 = new CalHeatMap();
+    cal4.init({
+            itemSelector: "#AMK-heatmap",
+            itemNamespace: "AMK",
+            data: "./AMK_data.csv",
+            dataType: "csv",
+            afterLoadData: converter,
+            range: 8,
+            domain: "day",
+            subDomain: "hour",
+            subDomainTextFormat: "%H",
+            start: start_date,
+            cellSize: 15,
+            domainGutter: 5,
+            domainMargin: 5,
+            animationDuration: 1500, 
+            nextSelector: "#domain-highlight-next-selector",
+            previousSelector: "#domain-highlight-previous-selector",
+            tooltip: true,
+            legend: [1, 10, 50, 100 ]
             });
 
 </script>
+
 
 
 <script>
