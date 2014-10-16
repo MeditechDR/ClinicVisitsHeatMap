@@ -28,6 +28,8 @@
 
 <script type="text/javascript">
 
+    // Simple function to convert parsed tabular csv data to 
+    // something resembling a Javascript object.
     function converter(data) {
         var i, total, results = {};
         for (i=0, total = data.length; i<total; i++) {
@@ -36,33 +38,58 @@
         return results;
     }    
 
-var start_date = new Date(); start_date.setDate(start_date.getDate() -7 );
+// Instantiate a new Date object
+var start_date = new Date();     
+    // Set the date to 7 days ago
+    start_date.setDate(start_date.getDate() -7 ); 
 
+// Define 4 identifiers for the sets of data.
+// In this case, mnemonics for 4 hospitals.
+// Note divs above with matching ids.
 var facilities = ["ASL", "ASH", "AQP", "AMK"];
 
+// Iterate through the 4 hospitals passing each
+// mnemonics as a parameter into the function.
 facilities.forEach(function(facility) {
-
+        //Instantiate a calendar (SVG) object
         var cal = new CalHeatMap();
-
+        // Initialize the object with rendering parameters
         cal.init({
+                // Use the hospital mnemonic as a dic selector
                 itemSelector: "#"+facility,
+                // Assign each one a unique namespace
                 itemNamespace: facility,
+                // Use mnemonic to identify the corresponding csv file
                 data: facility+"_data.csv",
+                // Use the cal-heatmap csv data parser
                 dataType: "csv",
+                // After parsing the csv, run reults through the converter function
                 afterLoadData: converter,
+                // Set number of Day domains/blocks
                 range: 8,
+                // Set each domain to be 1 day
                 domain: "day",
+                // Illustrate hours left to right (as opposed to top to bottom)
                 subDomain: "x_hour",
+                // Label each cell with Hour in 24 hr notation
                 subDomainTextFormat: "%H",
+                // Set the initial start date to render
                 start: start_date,
+                // Set size of each hour
                 cellSize: 15,
+                // Set spacing between domains
                 domainGutter: 5,
                 domainMargin: 5,
-                animationDuration: 500, 
+                // Set animation speed
+                animationDuration: 500,
+                // What to call when selector buttons are clicked
                 nextSelector: "#domain-highlight-next-selector",
                 previousSelector: "#domain-highlight-previous-selector",
+                // Draw fancy roll over tool tips
                 tooltip: true,
+                // Set the data class labels for roll over tool tips
                 itemName: ["visit", "visits"],
+                // Draw a legend under each panel
                 displayLegend: false
                 });
         });
